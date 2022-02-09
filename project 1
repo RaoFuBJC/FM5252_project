@@ -1,0 +1,14 @@
+from math import log, sqrt, exp
+from scipy.stats import norm
+d1 = lambda S,K,T,r,sigma:(log(S/K)+(r+sigma**2/2.)*T)/(sigma*sqrt(T))
+d2 = lambda S,K,T,r,sigma:d1(S,K,T,r,sigma)-sigma*sqrt(T)
+euro_call = lambda S,K,T,r,sigma:S*norm.cdf(d1(S,K,T,r,sigma))-K*exp(-r*T)*norm.cdf(d2(S,K,T,r,sigma))
+euro_put = lambda S,K,T,r,sigma:K*exp(-r*T)-S+euro_call(S,K,T,r,sigma)
+call_delta = lambda S,K,T,r,sigma:norm.cdf(d1(S,K,T,r,sigma))
+put_delta = lambda S,K,T,r,sigma:-norm.cdf(-d1(S,K,T,r,sigma))
+gamma = lambda S,K,T,r,sigma:norm.pdf(d1(S,K,T,r,sigma))/(S*sigma*sqrt(T))
+vega = lambda S,K,T,r,sigma:(S*norm.pdf(d1(S,K,T,r,sigma))*sqrt(T))
+call_theta = lambda S,K,T,r,sigma:(-(S*norm.pdf(d1(S,K,T,r,sigma))*sigma)/(2*sqrt(T)) - r*K*exp(-r*T)*norm.cdf(d2(S,K,T,r,sigma)))
+put_theta = lambda S,K,T,r,sigma:(-(S*norm.pdf(d1(S,K,T,r,sigma))*sigma)/(2*sqrt(T)) + r*K*exp(-r*T)*norm.cdf(-d2(S,K,T,r,sigma)))
+call_rho = lambda S,K,T,r,sigma:(K*T*exp(-r*T)*norm.cdf(d2(S,K,T,r,sigma)))
+put_rho = lambda S,K,T,r,sigma:(-K*T*exp(-r*T)*norm.cdf(-d2(S,K,T,r,sigma)))
