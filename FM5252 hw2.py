@@ -141,4 +141,6 @@ def put_greeks(S, K, T, r, sigma):
     return put_delta(S, K, T, r, sigma), gamma(S, K, T, r, sigma), vega(S, K, T, r, sigma), put_theta(S, K, T, r,sigma), put_rho(S, K, T, r, sigma)
 
 
+#colabrates with HuHong and my european code use my previous class's lecture code(FM5151)
+
 
